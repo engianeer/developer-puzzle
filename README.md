@@ -44,8 +44,23 @@ Please provide a short code review of the base `master` branch:
 
 #### Task 1-A
 1. What is done well?
+
+The developer-puzzle has some really nice bones. A solid state management library and pretty cool about setting up an api proxy. It is also nice that lint and jest are configured.
+
 2. What would you change?
+
+Well the app doesn't really do anything with the data returned sandbox.iexapis.com.
+
+    1. Hook up app so stock data is displayed.
+    2. Add to the readme about how to get a token from iexapis. I would describe the differences between test and production tokens/urls in iexcloud.
+    3. Jest tests are specified so update them.
+    4. The directory structure is a little confusing. I'd ask around at other t-mobile teams and see if there are project structure best practices internally.
+    5. I'd ask other teams about lint and prettier code formatting standards. There are unused variables.
+
 3. Are there any code smells or problematic implementations?
+
+    1. Jest tests aren't passing.
+    2. Need to unsubscribe from observable subscription to avoid memory leaks. Could also use async pipe.
 
 > Make a PR to fix at least one of the issues that you identify
 
