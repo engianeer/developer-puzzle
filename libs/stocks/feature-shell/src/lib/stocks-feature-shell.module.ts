@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
+  MatDatepickerModule,
+  MatNativeDateModule,
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
@@ -18,6 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
       { path: '', pathMatch: 'full', component: StocksComponent }
     ]),
     ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,

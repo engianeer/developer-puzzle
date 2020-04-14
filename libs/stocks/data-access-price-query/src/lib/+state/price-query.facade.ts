@@ -18,7 +18,11 @@ export class PriceQueryFacade {
 
   constructor(private store: Store<PriceQueryPartialState>) {}
 
-  fetchQuote(symbol: string, period: string) {
+  fetchQuote(symbol: string) {
+
+    //TODO: Create helper function to generate period based off of start date.
+    const period = 'max';
+
     this.store.dispatch(new FetchPriceQuery(symbol, period));
   }
 }
