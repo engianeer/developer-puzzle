@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import {
   StocksAppConfig,
@@ -22,11 +22,15 @@ export class PriceQueryEffects {
     PriceQueryActionTypes.FetchPriceQuery,
     {
       run: (action: FetchPriceQuery, state: PriceQueryPartialState) => {
+
+        const params = new HttpParams()
+          .set('symbol', action.symbol)
+          .set('period', action.period);
+
         return this.httpClient
           .get(
-            `${this.env.apiURL}/beta/stock/${action.symbol}/chart/${
-              action.period
-            }?token=${this.env.apiKey}`
+            `/api/${action.symbol}`,
+            { params: params }
           )
           .pipe(
             map(resp => new PriceQueryFetched(resp as PriceQueryResponse[]))
