@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   Input,
   OnInit,
@@ -14,6 +13,8 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class ChartComponent implements OnInit, OnDestroy {
   @Input() data$: Observable<any>;
+  @Input() startDate: Date;
+  @Input() endDate: Date;
 
   private subscription: Subscription;
 
@@ -25,8 +26,6 @@ export class ChartComponent implements OnInit, OnDestroy {
     options: any;
   };
 
-  constructor(private cd: ChangeDetectorRef) {}
-
   ngOnInit() {
     this.chart = {
       title: 'Stock price',
@@ -36,8 +35,22 @@ export class ChartComponent implements OnInit, OnDestroy {
       options: { width: '600', height: '400' }
     };
 
-    this.subscription = this.data$.subscribe(newData => (this.chart.data = newData));
+    this.subscription = this.data$.subscribe(newData => (
+      this.chart.data = this.filterData(newData)
+    ));
 
+  }
+
+  filterData(data): void {
+
+    const sd = this.startDate.getTime();
+    const ed = this.endDate.getTime();
+
+    const res = data.filter(d => {
+      const time = new Date(d[0]).getTime();
+      return (sd <= time && time <= ed);
+    });
+    return res;
   }
 
   ngOnDestroy(): void {

@@ -20,35 +20,51 @@ export class StocksComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   quotes$ = this.priceQuery.priceQueries$;
-
-  timePeriods = [
-    { viewValue: 'All available data', value: 'max' },
-    { viewValue: 'Five years', value: '5y' },
-    { viewValue: 'Two years', value: '2y' },
-    { viewValue: 'One year', value: '1y' },
-    { viewValue: 'Year-to-date', value: 'ytd' },
-    { viewValue: 'Six months', value: '6m' },
-    { viewValue: 'Three months', value: '3m' },
-    { viewValue: 'One month', value: '1m' }
-  ];
+  maxDate = new Date();
 
   constructor(private fb: FormBuilder, private priceQuery: PriceQueryFacade) {
-    this.stockPickerForm = fb.group({
+    this.stockPickerForm = this.fb.group({
       symbol: [null, Validators.required],
-      period: [null, Validators.required]
-    });
+      startDate: [null, Validators.required],
+      endDate: [null, Validators.required]
+    },
+      {
+        validator: this.validateDates()
+      }
+    );
+  }
+
+  validateDates() {
+    return (group: FormGroup) => {
+
+      const startDateControl = group.controls['startDate'];
+      const endDateControl = group.controls['endDate'];
+
+      if (!startDateControl.value || !endDateControl.value)
+        return;
+
+      const invalid = startDateControl.value > endDateControl.value;
+
+      if (invalid) {
+        startDateControl.setErrors({invalidDate: invalid});
+        this.stockPickerForm.controls['startDate'].setValue(this.stockPickerForm.value.endDate);
+      } else {
+        startDateControl.setErrors(null);
+      }
+    }
   }
 
   ngOnInit() {
     this.subscription = this.stockPickerForm.valueChanges.subscribe(
-      () => this.fetchQuote()
-    );
+      () => {
+        this.fetchQuote()
+      }    );
   }
 
   fetchQuote() {
     if (this.stockPickerForm.valid) {
-      const { symbol, period } = this.stockPickerForm.value;
-      this.priceQuery.fetchQuote(symbol, period);
+      const { symbol } = this.stockPickerForm.value;
+      this.priceQuery.fetchQuote(symbol);
     }
   }
 

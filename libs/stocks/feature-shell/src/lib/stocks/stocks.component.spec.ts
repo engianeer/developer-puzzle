@@ -14,15 +14,15 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
-  MatButtonModule
+  MatButtonModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 interface TestSchema {
   '': ''
 }
-
-
 
 describe('StocksComponent', () => {
   let component: StocksComponent;
@@ -37,9 +37,11 @@ describe('StocksComponent', () => {
       imports: [
         ReactiveFormsModule,
         MatFormFieldModule,
+        MatDatepickerModule,
         MatInputModule,
         MatSelectModule,
         MatButtonModule,
+        MatNativeDateModule,
         SharedUiChartModule,
         BrowserAnimationsModule
       ],

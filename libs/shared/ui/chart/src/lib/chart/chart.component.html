@@ -1,7 +1,7 @@
 <google-chart
   id="stocks-chart"
   aria-label="stocks-chart"
-  *ngIf="chart.data"
+  *ngIf="chart.data && chart.data.length > 0"
   [title]="chart.title"
   [type]="chart.type"
   [data]="chart.data"
